@@ -39,16 +39,25 @@
         ],
 
     ];
+
+    // Array che verrà stampato
+    $stampaHotels = [];
     
-    $parkingHotel = [];
     $has_request = !empty($_GET);
-    if ($has_request) {
+
+    // se non ci sono chiamate get stampa tutto copia l'array hotel in "stampa hotels"
+    if (empty($_GET))
+    foreach ($hotels as $hotel) {
+        array_push($stampaHotels, $hotel);
+    }
+    //se ci sono chiamate get allora
+    else  {
         $parking = $_GET['parking'];
         
         foreach ($hotels as $hotel) {
             
             if($hotel['parking'] == true) {
-                array_push($parkingHotel, $hotel);
+                array_push($stampaHotels, $hotel);
                 
             }
         }
@@ -88,8 +97,9 @@
                     </label>
                 </div>
                  -->
-                
-                <button>FILTRA</button>
+                <div class="d-flex justify-content-end ">
+                <button >FILTRA</button>
+                </div>
             </form>
             <table class="table">
         <thead>
@@ -101,36 +111,22 @@
             </tr>
         </thead>
         <tbody>
-        <?php if (!$has_request) { ?>    
-            <?php foreach ($hotels as $hotel) {
+           
+            <?php foreach ($stampaHotels as $stampaHotel) {
                 ?>
                 <tr>
-                <th scope="row"><?= $hotel['name'] ?></th>
+                <th scope="row"><?= $stampaHotel['name'] ?></th>
                 <td>
-                    <?php if ($hotel['parking']) {
+                    <?php if ($stampaHotel['parking']) {
                     echo 'Sì';
                 } else {echo 'No';}?>
                 </td>
-                <td><?= $hotel['vote'] ?></td>
-                <td><?= $hotel['distance_to_center'] ?></td>
+                <td><?= $stampaHotel['vote'] ?></td>
+                <td><?= $stampaHotel['distance_to_center'] ?></td>
                 </tr>
             <?php } ?>
-        <?php } ?>      
-        <?php if ($has_request) { ?>    
-            <?php foreach ($parkingHotel as $parking) {
-                ?>
-                <tr>
-                <th scope="row"><?= $parking['name'] ?></th>
-                <td>
-                    <?php if ($parking['parking']) {
-                    echo 'Sì';
-                } else {echo 'No';}?>
-                </td>
-                <td><?= $parking['vote'] ?></td>
-                <td><?= $parking['distance_to_center'] ?></td>
-                </tr>
-            <?php } ?>
-        <?php } ?>        
+             
+              
     </div>
 </body>
 </html>
